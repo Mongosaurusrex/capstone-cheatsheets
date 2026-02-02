@@ -12,6 +12,13 @@
 \setenumerate{noitemsep}
 \setitemize{noitemsep}
 \renewcommand{\baselinestretch}{0.95}
+
+% ---- squeeze math spacing ----
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+\setlength{\abovedisplayshortskip}{1pt}
+\setlength{\belowdisplayshortskip}{1pt}
+
 \pagenumbering{gobble}
 
 \title{Part I Exam Cheatsheets:\\Probability and Statistics Theory}
@@ -21,138 +28,148 @@
 \begin{document}
 \maketitle
 
+% --------------------
 \section{Common distributions}
-    {
-    \renewcommand*{\arraystretch}{2.25}
-    \[ \begin{array}{*4{>{\displaystyle}l}}
-        \textbf{Distribution} & \textbf{Mean}       & \textbf{Variance}               & \textbf{PMF/PDF} \\ \hline
-        \unifdist{a}{b}     & \frac{a + b}{2}   & \frac{(b - a)(b - a + 2)}{12} & \frac{1}{b - a + 1} \\
-        \berdist{p}         & p                 & p(1 - p)                      & p^x (1 - p)^{1 - x} \\
-        \bindist{n}{p}      & np                & np(1 - p)                     & \binom{n}{k} p^k (1 - p)^{n - k} \\
-        \geomdist{p}        & \frac{1}{p}       & \frac{1 - p}{p^2}             & p(1 - p)^{k - 1} \\
-        \poissdist{\lambda}     & \lambda           & \lambda                   & \frac{\lambda^k e^{-\lambda}}{k!} \\
-        \unifdist{a}{b}         & \frac{a + b}{2}   & \frac{(b - a)^2}{12}      & \frac{1}{b - a} \\
-        \ndist{\mu}{\sigma^2}   & \mu               & \sigma^2                  & \frac{1}{\sqrt{2 \pi \sigma^2}} \exp{\left(-\frac{(x - \mu)^2}{2 \sigma^2}\right)} \\
-        \expdist{\lambda}       & \frac{1}{\lambda} & \frac{1}{\lambda^2}       & \lambda e^{-\lambda x} \\
-        \betadist{\alpha}{\beta}    & \frac{\alpha}{\alpha + \beta} & \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}  & \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1} (1 - x)^{\beta - 1} \\
-        \gammadist{\alpha}{\beta}   & \frac{\alpha}{\beta}          & \frac{\alpha}{\beta^2}                                        & \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x}
-    \end{array} \]    
-    }
+{
+\renewcommand*{\arraystretch}{2.25}
+\[
+\begin{array}{*4{>{\displaystyle}l}}
+\textbf{Distribution} & \textbf{Mean} & \textbf{Variance} & \textbf{PMF/PDF} \\ \hline
+\unifdist{a}{b} & \frac{a+b}{2} & \frac{(b-a)(b-a+2)}{12} & \frac{1}{b-a+1} \\
+\berdist{p} & p & p(1-p) & p^x(1-p)^{1-x} \\
+\bindist{n}{p} & np & np(1-p) & \binom{n}{k}p^k(1-p)^{n-k} \\
+\geomdist{p} & \frac1p & \frac{1-p}{p^2} & p(1-p)^{k-1} \\
+\poissdist{\lambda} & \lambda & \lambda & \frac{\lambda^k e^{-\lambda}}{k!} \\
+\unifdist{a}{b} & \frac{a+b}{2} & \frac{(b-a)^2}{12} & \frac{1}{b-a} \\
+\ndist{\mu}{\sigma^2} & \mu & \sigma^2 &
+\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right) \\
+\expdist{\lambda} & \frac1\lambda & \frac1{\lambda^2} & \lambda e^{-\lambda x} \\
+\betadist{\alpha}{\beta} &
+\frac{\alpha}{\alpha+\beta} &
+\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)} &
+\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}
+x^{\alpha-1}(1-x)^{\beta-1} \\
+\gammadist{\alpha}{\beta} &
+\frac{\alpha}{\beta} &
+\frac{\alpha}{\beta^2} &
+\frac{\beta^\alpha}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}
+\end{array}
+\]
+}
 
+% --------------------
 \section{MLE and Log-Likelihood}
 
-\renewcommand*{\arraystretch}{2.2}
+\renewcommand*{\arraystretch}{2.1}
 \[
 \begin{array}{*5{>{\displaystyle}l}}
 \textbf{Dist} & \log p(x|\theta) & \ell'(\theta) & \ell''(\theta) & \textbf{MLE} \\ \hline
-
-\text{Bernoulli}(p)
-& x\log p+(1-x)\log(1-p)
-& \frac{x}{p}-\frac{1-x}{1-p}
-& -\frac{x}{p^2}-\frac{1-x}{(1-p)^2}
-& \hat p=\bar x
-\\ \hline
-
-\text{Binomial}(n,p)
-& k\log p+(n-k)\log(1-p)
-& \frac{k}{p}-\frac{n-k}{1-p}
-& -\frac{k}{p^2}-\frac{n-k}{(1-p)^2}
-& \hat p=\frac{k}{n}
-\\ \hline
-
-\text{Geometric}(p)
-& \log p+(k-1)\log(1-p)
-& \frac{1}{p}-\frac{k-1}{1-p}
-& -\frac{1}{p^2}-\frac{k-1}{(1-p)^2}
-& \hat p=\frac{1}{\bar x}
-\\ \hline
-
-\text{Poisson}(\lambda)
-& x\log\lambda-\lambda
-& \frac{x}{\lambda}-1
-& -\frac{x}{\lambda^2}
-& \hat\lambda=\bar x
-\\ \hline
-
-\text{Exponential}(\lambda)
-& \log\lambda-\lambda x
-& \frac{1}{\lambda}-x
-& -\frac{1}{\lambda^2}
-& \hat\lambda=\frac{1}{\bar x}
-\\ \hline
-
-\mathcal N(\mu,\sigma^2)
-& -\frac{(x-\mu)^2}{2\sigma^2}-\frac{1}{2}\log\sigma^2
-& \frac{x-\mu}{\sigma^2}
-& -\frac{1}{\sigma^2}
-& \hat\mu=\bar x
+\text{Bern}(p) & x\log p+(1-x)\log(1-p) &
+\frac{x}{p}-\frac{1-x}{1-p} &
+-\frac{x}{p^2}-\frac{1-x}{(1-p)^2} &
+\hat p=\bar x \\ \hline
+\text{Bin}(n,p) & k\log p+(n-k)\log(1-p) &
+\frac{k}{p}-\frac{n-k}{1-p} &
+-\frac{k}{p^2}-\frac{n-k}{(1-p)^2} &
+\hat p=\frac{k}{n} \\ \hline
+\text{Geom}(p) & \log p+(k-1)\log(1-p) &
+\frac1p-\frac{k-1}{1-p} &
+-\frac1{p^2}-\frac{k-1}{(1-p)^2} &
+\hat p=\frac1{\bar x} \\ \hline
+\text{Pois}(\lambda) & x\log\lambda-\lambda &
+\frac{x}{\lambda}-1 &
+-\frac{x}{\lambda^2} &
+\hat\lambda=\bar x \\ \hline
+\text{Exp}(\lambda) & \log\lambda-\lambda x &
+\frac1\lambda-x &
+-\frac1{\lambda^2} &
+\hat\lambda=\frac1{\bar x} \\ \hline
+\mathcal N(\mu,\sigma^2) &
+-\frac{(x-\mu)^2}{2\sigma^2}-\frac12\log\sigma^2 &
+\frac{x-\mu}{\sigma^2} &
+-\frac1{\sigma^2} &
+\hat\mu=\bar x
 \end{array}
 \]
 
+% --------------------
 \section{Conditioning, independence, and counting}
-    \subsection{Conditional probability}
-        \textbf{Multiplication rule:} Given a countable set of events $\set{A_i}$,
-        \[
-            \Pr{\left(\bigcap_{i=1}^n A_i\right)} = \Pr{(A_1)} \Pr{(A_2 \,|\, A_1)} \Pr{(A_3 \,|\, A_1 \cap A_2)} \cdots \Pr{\left(A_n \,\middle|\, \bigcap_{i=1}^{n-1} A_i\right)}
-        \]
 
-        \textbf{Law of total probability:} Given a mutually exclusive, collectively exhaustive, and countable set of events $\set{A_i}$, $\Pr{(B)} = \sum_i \Pr{(A_i)} \Pr{(B \,|\, A_i)}$.
+\subsection{Conditional probability}
 
-    \subsection{Independence}
-        A countable set of events $\set{A_i}$ is independent if $\Pr{\left(\bigcap_{i \in S} A_i\right)} = \prod_{i \in S} \Pr{(A_i)}$ for every subsets $S$ of the enumeration of $\set{A_i}$.
+\[
+\Pr\!\left(\bigcap_{i=1}^n A_i\right)
+= \Pr(A_1)\prod_{i=2}^n \Pr\!\left(A_i \mid \bigcap_{j=1}^{i-1} A_j\right)
+\]
 
-        Some facts about independence:
-        \begin{itemize}
-            \item $A$ and $B$ are independent iff $\Pr{(A \,|\, B)} = \Pr{(A)}$.
-            \item If $A$ and $B$ are independent, so are $A$ and $B^c$ (and so are $A^c$ and $B^c$).
-            \item Independence implies pairwise independence, but not vice versa.
-            \item Independence does not imply conditional independence, and vice versa.
-            \item If $X$ and $Y$ are independent r.v.s, then $\E{[g(X) h(Y)]} = \E{[g(X)]} \E{[h(Y)]}$ for any functions $g, h$, and $\Var{(X + Y)} = \Var{X} + \Var{Y}$.
-        \end{itemize}
+\[
+\Pr(B)=\sum_i \Pr(A_i)\Pr(B\mid A_i),\quad
+\Pr(A_i\mid B)=\frac{\Pr(B\mid A_i)\Pr(A_i)}{\sum_j \Pr(B\mid A_j)\Pr(A_j)}
+\]
 
-    \subsection{Counting}
-        Number of\dots
-        \begin{itemize}
-            \item Permutations of $n$ objects: $n!$
-            \item $k$-permutations of $n$ objects: $n! / (n - k)!$
-            \item Combinations of $k$ out of $n$ objects: $n! / (k! (n - k)!)$
-            \item Partitions of $n$ objects into $r$ groups with the $i$-th group having $n_i$ objects: $n! / (n_1! n_2! \cdots n_r!)$
-        \end{itemize}
+\[
+\Pr(A\mid B)=
+\frac{\Pr(B\mid A)\Pr(A)}
+{\Pr(B\mid A)\Pr(A)+\Pr(B\mid A^c)\Pr(A^c)}
+\]
+
+\subsection{Independence}
+
+\[
+\Pr\!\left(\bigcap_{i\in S} A_i\right)=\prod_{i\in S}\Pr(A_i)
+\]
+
+\begin{itemize}
+\item $A\perp B \iff \Pr(A\mid B)=\Pr(A)$
+\item Independence $\not\Rightarrow$ conditional independence
+\item $X\perp Y \Rightarrow \E[g(X)h(Y)]=\E[g(X)]\E[h(Y)]$
+\end{itemize}
+
+\subsection{Counting}
+\begin{itemize}
+\item Permutations: $n!$
+\item $k$-permutations: $n!/(n-k)!$
+\item Combinations: $n!/(k!(n-k)!)$
+\item Partitions: $n!/(n_1!\cdots n_r!)$
+\end{itemize}
+
+% --------------------
 \section{Random variables}
 
-\subsection{Properties of expectation and variance}
+\subsection{Expectation and variance}
 
-Linearity:
-$\displaystyle \E[aX+bY]=a\E[X]+b\E[Y]$
+\[
+\E[aX+bY]=a\E[X]+b\E[Y],\quad
+\E[X]=\E[\E[X\mid Y]]=\int \E[X\mid Y=y]f_Y(y)\,dy
+\]
 
-Law of iterated expectations:
-$\displaystyle \E[\E[X\mid Y]]=\E[X]$
+\[
+\Var(X)=\E[X^2]-(\E[X])^2,\quad
+\Var(cX)=c^2\Var(X)
+\]
 
-Law of total expectation:
-$\displaystyle \E[X]=\int \E[X\mid Y=y]\,f_Y(y)\,dy$
+\[
+\Cov(X,Y)=\E[XY]-\E[X]\E[Y],\quad
+\Var(X+Y)=\Var(X)+\Var(Y)+2\Cov(X,Y)
+\]
 
-Product (independence):
-$\displaystyle X\perp Y \;\Rightarrow\; \E[XY]=\E[X]\E[Y]$
-
-Variance (definition):
-$\displaystyle \Var(X)=\E[X^2]-(\E[X])^2$
-
-Variance scaling:
-$\displaystyle \Var(cX)=c^2\Var(X)$
-
-Variance of a sum:
-$\displaystyle \Var(X+Y)=\Var(X)+\Var(Y)+2\Cov(X,Y)$
-
-Law of total variance:
-$\displaystyle \Var(X)=\E[\Var(X\mid Y)]+\Var(\E[X\mid Y])$
+\[
+\Var(X)=\E[\Var(X\mid Y)]+\Var(\E[X\mid Y]),\quad
+X\perp Y \Rightarrow \Cov(X,Y)=0
+\]
 
 \subsection{Conditioning rules}
 
-$\displaystyle \E[g(Y)X\mid Y]=g(Y)\E[X\mid Y]$
+\[
+\E[g(Y)X\mid Y]=g(Y)\E[X\mid Y],\quad
+\Var(X\mid Y)=\E[X^2\mid Y]-(\E[X\mid Y])^2
+\]
 
-$\displaystyle X\perp Y \;\Rightarrow\; \E[X\mid Y]=\E[X],\;
-\Var(X\mid Y)=\Var(X)$
-
-$\displaystyle \Var(X\mid Y)=\E[X^2\mid Y]-(\E[X\mid Y])^2$
+\[
+X\perp Y \Rightarrow
+\E[X\mid Y]=\E[X],\quad
+\Var(X\mid Y)=\Var(X)
+\]
 
 \end{document}
