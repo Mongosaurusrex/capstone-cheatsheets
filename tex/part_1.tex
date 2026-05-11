@@ -59,40 +59,49 @@ x^{\alpha-1}(1-x)^{\beta-1} \\
 }
 
 % --------------------
-\section{MLE and Log-Likelihood}
+\section{MLE and Fisher Information (i.i.d., size $n$)}
 
-\renewcommand*{\arraystretch}{2.1}
+\renewcommand*{\arraystretch}{1.8}
 \[
 \begin{array}{*5{>{\displaystyle}l}}
-\textbf{Dist} & \log p(x|\theta) & \ell'(\theta) & \ell''(\theta) & \textbf{MLE} \\ \hline
-\text{Bern}(p) & x\log p+(1-x)\log(1-p) &
-\frac{x}{p}-\frac{1-x}{1-p} &
--\frac{x}{p^2}-\frac{1-x}{(1-p)^2} &
-\hat p=\bar x \\ \hline
-\text{Bin}(n,p) & k\log p+(n-k)\log(1-p) &
-\frac{k}{p}-\frac{n-k}{1-p} &
--\frac{k}{p^2}-\frac{n-k}{(1-p)^2} &
-\hat p=\frac{k}{n} \\ \hline
-\text{Geom}(p) & \log p+(k-1)\log(1-p) &
-\frac1p-\frac{k-1}{1-p} &
--\frac1{p^2}-\frac{k-1}{(1-p)^2} &
-\hat p=\frac1{\bar x} \\ \hline
-\text{Pois}(\lambda) & x\log\lambda-\lambda &
-\frac{x}{\lambda}-1 &
--\frac{x}{\lambda^2} &
-\hat\lambda=\bar x \\ \hline
-\text{Exp}(\lambda) & \log\lambda-\lambda x &
-\frac1\lambda-x &
--\frac1{\lambda^2} &
-\hat\lambda=\frac1{\bar x} \\ \hline
-\mathcal N(\mu,\sigma^2) &
--\frac{(x-\mu)^2}{2\sigma^2}-\frac12\log\sigma^2 &
-\frac{x-\mu}{\sigma^2} &
--\frac1{\sigma^2} &
-\hat\mu=\bar x
+\textbf{Dist} 
+& \ell_n(\theta) 
+& \ell_n'(\theta) 
+& \textbf{MLE} 
+& I_n(\theta) \\ \hline
+
+\text{Bern}(p) 
+& \sum X_i \log p + (n-\sum X_i)\log(1-p)
+& \frac{\sum X_i}{p}-\frac{n-\sum X_i}{1-p}
+& \hat p=\bar X_n
+& \frac{n}{p(1-p)} \\ \hline
+
+\text{Geom}(p)
+& n\log p + (\sum X_i-n)\log(1-p)
+& \frac{n}{p}-\frac{\sum X_i-n}{1-p}
+& \hat p=\frac1{\bar X_n}
+& \frac{n}{p^2(1-p)} \\ \hline
+
+\text{Pois}(\lambda)
+& \sum X_i \log\lambda - n\lambda
+& \frac{\sum X_i}{\lambda}-n
+& \hat\lambda=\bar X_n
+& \frac{n}{\lambda} \\ \hline
+
+\text{Exp}(\lambda)
+& n\log\lambda - \lambda\sum X_i
+& \frac{n}{\lambda}-\sum X_i
+& \hat\lambda=\frac1{\bar X_n}
+& \frac{n}{\lambda^2} \\ \hline
+
+\mathcal N(\mu,\sigma^2)
+& -\frac{1}{2\sigma^2}\sum (X_i-\mu)^2
+& \frac{\sum (X_i-\mu)}{\sigma^2}
+& \hat\mu=\bar X_n
+& \frac{n}{\sigma^2}
+
 \end{array}
 \]
-
 % --------------------
 \section{Conditioning, independence, and counting}
 
@@ -158,7 +167,40 @@ x^{\alpha-1}(1-x)^{\beta-1} \\
 \Var(X)=\E[\Var(X\mid Y)]+\Var(\E[X\mid Y]),\quad
 X\perp Y \Rightarrow \Cov(X,Y)=0
 \]
+    \subsection{Correlation and covariance}
+        The \emph{correlation coefficient} measures the linear association between variables:
+        \[
+            \rho_{XY} = \frac{1}{n} \sum_{i=1}^{n} \left(\frac{X_i - \mean{X}_n}{\sigma_X}\right) \left(\frac{Y_i - \mean{Y}_n}{\sigma_Y}\right) = \frac{\Cov{(X, Y)}}{\sigma_X \sigma_Y} \in [-1, 1]
+        \]
+        Properties of covariance:
+        \begin{itemize}
+            \item $\Cov{(aX + b, Y)} = a \Cov{(X, Y)}$
+            \item $\Cov{(X, Y + Z)} = \Cov{(X, Y)} + \Cov{(Y, Z)}$
+            \item $\Var{\left(\sum_{i=1}^{n} X_i\right)} = \sum_{i=1}^{n} \Var{X_i} + \sum_{\set[(i, j)]{i \neq j}} \Cov{(X_i, X_j)}$
+        \end{itemize}
 
+            \subsection{Correlation and covariance}
+        The \emph{correlation coefficient} measures the linear association between variables:
+        \[
+            \rho_{XY} = \frac{1}{n} \sum_{i=1}^{n} \left(\frac{X_i - \mean{X}_n}{\sigma_X}\right) \left(\frac{Y_i - \mean{Y}_n}{\sigma_Y}\right) = \frac{\Cov{(X, Y)}}{\sigma_X \sigma_Y} \in [-1, 1]
+        \]
+        Properties of covariance:
+        \begin{itemize}
+            \item $\Cov{(aX + b, Y)} = a \Cov{(X, Y)}$
+            \item $\Cov{(X, Y + Z)} = \Cov{(X, Y)} + \Cov{(Y, Z)}$
+            \item $\Var{\left(\sum_{i=1}^{n} X_i\right)} = \sum_{i=1}^{n} \Var{X_i} + \sum_{\set[(i, j)]{i \neq j}} \Cov{(X_i, X_j)}$
+        \end{itemize}
+            \subsection{Correlation and covariance}
+        The \emph{correlation coefficient} measures the linear association between variables:
+        \[
+            \rho_{XY} = \frac{1}{n} \sum_{i=1}^{n} \left(\frac{X_i - \mean{X}_n}{\sigma_X}\right) \left(\frac{Y_i - \mean{Y}_n}{\sigma_Y}\right) = \frac{\Cov{(X, Y)}}{\sigma_X \sigma_Y} \in [-1, 1]
+        \]
+        Properties of covariance:
+        \begin{itemize}
+            \item $\Cov{(aX + b, Y)} = a \Cov{(X, Y)}$
+            \item $\Cov{(X, Y + Z)} = \Cov{(X, Y)} + \Cov{(Y, Z)}$
+            \item $\Var{\left(\sum_{i=1}^{n} X_i\right)} = \sum_{i=1}^{n} \Var{X_i} + \sum_{\set[(i, j)]{i \neq j}} \Cov{(X_i, X_j)}$
+        \end{itemize}
 \subsection{Conditioning rules}
 
 \[
@@ -171,5 +213,56 @@ X\perp Y \Rightarrow
 \E[X\mid Y]=\E[X],\quad
 \Var(X\mid Y)=\Var(X)
 \]
+\subsection{LMS \& MAP Estimation}
+
+\[
+\hat X_{\mathrm{LMS}}=\E[X\mid Y],\qquad
+\E[(X-\hat X_{\mathrm{LMS}})^2\mid Y]=\Var(X\mid Y)
+\]
+
+\[
+\hat X_{\mathrm{MAP}}=\arg\max_x f_{X\mid Y}(x\mid y)
+\]
+
+\[
+\E[(X-\hat X_{\mathrm{MAP}})^2\mid Y]
+=\Var(X\mid Y)+(\E[X\mid Y]-\hat X_{\mathrm{MAP}})^2
+\]
+\section{Convergence and limit theorems}
+    \subsection{Useful inequalities}
+        \textbf{Markov:} For $X \geq 0$ with $\E{[X]} > 0$ and $t > 0$, $\Pr{[X \geq t]} \leq \E{[X]} / t$.
+
+        \textbf{Chebyshev:} For $X$ with $\E{[X]} < \infty$ and $t > 0$, $\Pr{[\abs{X - \E{[X]}} \geq t]} \leq (\Var{X}) / t^2$.
+
+        \textbf{Hoeffding:} Given $X_{i \in \range{n}} \iid X$ that are a.s.\ bounded, i.e., there exist $a < b$ such that $\Pr{[X_i \notin [a, b]]} = 0$, then $\Pr{\left[\abs{\mean{X}_n - \E{[X]}} \geq \epsilon\right]} \leq 2 \exp{\left(-\frac{2 n \epsilon^2}{(b - a)^2}\right)}$ for all $\epsilon > 0$.
+
+    \subsection{Modes of convergence}
+        Let $(T_n)$ be a sequence of r.v.s and $T$ another r.v., all in $\R$.
+        \begin{enumerate}
+            \item \emph{Convergence almost surely:} $T_n \convas T \iff \Pr{\left[\set[\omega]{T_n(\omega) \rightarrow T(\omega)}\right]} = 1$
+            \item \emph{Convergence in probability:} $T_n \convp T \iff \Pr{[\abs{T_n - T} \geq \epsilon]} \rightarrow 0$ for all $\epsilon > 0$
+            \item \emph{Convergence in distribution:} $T_n \convd T \iff \E{[f(T_n)]} \rightarrow \E{[f(T)]}$ for all continuous and bounded $f$
+        \end{enumerate}
+        (1) implies (2) implies (3), but (3) implies (2) only if the limit $T$ has a density: $T_n \convd T \implies \Pr{[a \leq T_n \leq b]} \rightarrow \Pr{[a \leq T \leq b]}$.
+
+        \textbf{Continuous mapping theorem:} Continuous functions preserve limits.
+
+    \subsection{Limit theorems}
+        Let $X_{i \in \range{n}} \iid X$ with finite mean $\mu$ and sample mean $\mean{X}_n$.
+        \begin{itemize}
+            \item \textbf{Strong LLN:} $\mean{X}_n \convas \mu$, i.e., $\Pr{\left[\lim_{n \rightarrow \infty} \mean{X}_n = \mu \right]} = 1$.
+            \item \textbf{Weak LLN:} If $\Var{X} < \infty$, then $\mean{X}_n \convp \mu$, i.e., $\Pr{[\abs{\mean{X}_n - \mu} \geq \epsilon]} \rightarrow 0$ for all $\epsilon > 0$.
+        \end{itemize}
+
+        \textbf{Central limit theorem:} If, in addition, $\Var{X} = \sigma^2 < \infty$, then the sample mean is asymptotically normal, i.e., $\sqrt{n} (\mean{X}_n - \mu) \convd \ndist{0}{\sigma^2}$.
+
+        \textbf{Slutsky's theorem: } Let $(T_n)$ and $(U_n)$ be sequences of r.v.s such that $T_n \convd T$ and $U_n \convp u \in \R$.
+        Then
+        \begin{itemize}
+            \item $T_n + U_n \convd T + u$
+            \item $T_n U_n \convd Tu$
+            \item $\frac{T_n}{U_n} \convd \frac{T}{u}$ if $u \neq 0$.
+        \end{itemize}
+
 
 \end{document}
